@@ -1,9 +1,21 @@
-node_module/
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
-Logs
-*.log
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
 npm-debug.log*
-
-.env
-
-.npm
+yarn-debug.log*
+yarn-error.log*
