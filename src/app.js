@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => { //handeling
   const status = err.status || 500;
-  const errror = err.message || 'Error processing your request';
+  const error = err.message || 'Error processing your request';
 
   res.status(status).send({
     error
