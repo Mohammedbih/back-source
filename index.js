@@ -1,8 +1,9 @@
-const express = require('express');
-const router = express.Router();
+require("dotenv").config();
 
-const app = express();
+const app = require("./src/app");
 
-app.listen(3000, ()=>{
-    console.log('Ready');
-})
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log("Ready in PORT", PORT);
+});
