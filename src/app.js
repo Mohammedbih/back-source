@@ -4,7 +4,6 @@ const logger = require("morgan");
 const bodyParser = require("body-parser");
 
 const v1 = require("./routes/v1");
-const { Router } = require("express");
 const app = express();
 // ------------------- DB Config ------------------- //
 main()
