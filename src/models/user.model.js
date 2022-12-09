@@ -3,15 +3,16 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const UserSchema = Schema({
-  name: { tybe: String, required: true },
-  age: { tybe: Number },
-  mobile:{ tybe: String},
-  visa_number:{tybe: Number , uinque: true},
-  t_shirts:{tybe: []},
-  email: { tybe: String, required: true, index: true, uinque: true },
-  password: { tybe: String, required: true },
-  tybe: { tybe: String }, // admin || user
-  joined: { tybe: Date, default: new Date() },
+  name: { type: String, required: true },
+  age: { type: Number },
+  mobile: { type: String },
+  visa_number: { type: Number, uinque: true },
+  t_shirts: { type: [] },
+  adress: { type: String },
+  email: { type: String, required: true, index: true, uinque: true },
+  password: { type: String, required: true },
+  type: { type: String }, // admin || user
+  joined: { type: Date, default: new Date() },
 });
 
 const User = mongoose.model("User", UserSchema);
