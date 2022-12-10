@@ -4,6 +4,7 @@ const logger = require("morgan");
 const bodyParser = require("body-parser");
 const passport = require("passport")
 const cors = require('cors');
+const session = require('express-session');
 
 const v1 = require("./routes/v1");
 const app = express();
@@ -24,9 +25,11 @@ app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(session({ secret: process.env.JWT_SECRET }))
 app.use(passport.initialize());
 app.use(passport.session());
 require("./config/passport")(passport);
+
 
 // ------------------- Routes ------------------- //
 

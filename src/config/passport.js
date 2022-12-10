@@ -5,8 +5,10 @@ const User = require("../models/user.model");
 
 module.exports = (passport) => {
   let config = {};
-  config.secretOrKey = process.env.JWT_SECRET;
   config.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+  config.secretOrKey = process.env.JWT_SECRET;
+  config.issuer = 'accounts.examplesoft.com';
+  config.audience = 'yoursite.net';
 
   passport.use(
     new JwtStrategy(config, async (jwtPayload, done) => {
