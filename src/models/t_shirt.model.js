@@ -12,13 +12,28 @@ const TshirtSchema = Schema({
       message: "{VALUE} is not supported",
     },
   },
+  size: {
+    type: String,
+    enum: {
+      values: ["Small", "Medium", "Large"],
+      message: "{VALUE} is not supported",
+    },
+  },
+  fit_or_over: {
+    type: String,
+    enum: {
+      values: ["Fit", "Over"],
+      message: "{VALUE} is not supported",
+    },
+  },
+
   added: { type: Date, default: new Date() },
   price: {
     type: Number,
     required: true,
     min: [100, "Price must be greater than 100"],
   },
-  img:{type: String, required: true}
+  img: { type: String, required: true },
 });
 
 const Tshirt = mongoose.model("T-Shirt", TshirtSchema);

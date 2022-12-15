@@ -7,7 +7,7 @@ const UserSchema = Schema({
   name: { type: String, required: true },
   age: { type: Number },
   mobile: { type: String },
-  visa_number: { type: Number, uinque: true },
+  visa_id: { type: mongoose.Schema.Types.ObjectId, ref: "Visa" },
   t_shirts:[
     { type: mongoose.Schema.Types.ObjectId, ref: "T-Shirt" },
   ],
@@ -61,3 +61,4 @@ UserSchema.methods.toJSON = function(){
 
 const User = mongoose.model("User", UserSchema);
 module.exports = User;
+5
