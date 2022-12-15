@@ -4,31 +4,28 @@ const bctypt = require("bcryptjs");
 const { Schema } = mongoose;
 
 const UserSchema = Schema({
-  name: { type: String, required: true },
+  name: { type: String, require: true },
   age: { type: Number },
   mobile: { type: String },
   visa_id: { type: mongoose.Schema.Types.ObjectId, ref: "Visa" },
-  t_shirts_bought:[
-    { type: mongoose.Schema.Types.ObjectId, ref: "T-Shirt" },
-  ],
-  t_shirt_cart:[
-    { type: mongoose.Schema.Types.ObjectId, ref: "T-Shirt" },
-  ],
+  t_shirts_bought: [{ type: mongoose.Schema.Types.ObjectId, ref: "T-Shirt" }],
+  t_shirt_cart: [{ type: mongoose.Schema.Types.ObjectId, ref: "T-Shirt" }],
   adress: { type: String },
   email: {
     type: String,
-    required: true,
+    require: true,
     unique: true,
     index: true,
   },
-  password: { type: String, required: true },
+  password: { type: String, require: true },
+  isAdmin: { type: Boolean, require: true, default: false },
   type: {
     type: String,
     enum: {
       values: ["User", "Admin"],
       message: "{VALUE} is not supported",
     },
-    default: "User"
+    default: "User",
   },
   joined: { type: Date, default: new Date() },
   token: String,
@@ -56,12 +53,12 @@ UserSchema.methods.isPasswordMatch = function (password, hashed) {
   return bctypt.compareSync(password, hashed);
 };
 
-UserSchema.methods.toJSON = function(){
-  const userObject = this.toObject()
+UserSchema.methods.toJSON = function () {
+  const userObject = this.toObject();
   delete userObject.password;
   return userObject;
-}
+};
 
 const User = mongoose.model("User", UserSchema);
 module.exports = User;
-5
+5;
