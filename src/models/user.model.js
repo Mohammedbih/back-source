@@ -8,7 +8,10 @@ const UserSchema = Schema({
   age: { type: Number },
   mobile: { type: String },
   visa_id: { type: mongoose.Schema.Types.ObjectId, ref: "Visa" },
-  t_shirts:[
+  t_shirts_bought:[
+    { type: mongoose.Schema.Types.ObjectId, ref: "T-Shirt" },
+  ],
+  t_shirt_cart:[
     { type: mongoose.Schema.Types.ObjectId, ref: "T-Shirt" },
   ],
   adress: { type: String },

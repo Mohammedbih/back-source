@@ -3,27 +3,25 @@ const Visa = require("../models/t_shirt.model");
 const visaController = {};
 
 // Create
-visaController.post_create_visa=async(req,res,next) => {
-  const {number}=req.body;
-  const exist = await Visa.findOne({number});
+visaController.post_create_visa = async (req, res, next) => {
+  const { number } = req.body;
+  const exist = await Visa.findOne({ number });
   try {
-    if(!exist){
+    if (!exist) {
       const newVisa = new Visa(req.body);
-        await newVisa.save();
-      return res.send({status:'Successed'})
+      await newVisa.save();
+      return res.send({ status: "Successed" });
     }
-    
   } catch (err) {
-    next(err)
+    next(err);
   }
   const err = new Error(`Visa ${req.body.number} is already taken`);
   return next(err);
-  
-}
+};
 
 // Get
 
-visaController.get_visa_by_id=async(req,res,next)=>{
+visaController.get_visa_by_id = async (req, res, next) => {
   const id = req.params.id;
   if (!id) return res.status(404).send({ err: "Missing Data Parameter" });
 
@@ -50,7 +48,7 @@ visaController.get_list = async (req, res, next) => {
     const vList = await getAllVisa(limit);
     return res.status(200).send(vList);
   } catch (e) {
-     next(e);
+    next(e);
   }
 };
 const getAllVisa = async (n) => {
@@ -76,7 +74,7 @@ visaController.post_update_by_id = async (req, res, next) => {
     number: req.body.number,
     serialcode: req.body.serialcode,
     password: req.body.password,
-    valid: req.body.valid
+    valid: req.body.valid,
   });
   Visa.findByIdAndUpdate(id, visa)
     .then(() => {
@@ -90,6 +88,5 @@ visaController.post_update_by_id = async (req, res, next) => {
       });
     });
 };
-
 
 module.exports = visaController;

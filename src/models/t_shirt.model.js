@@ -5,10 +5,17 @@ const { Schema } = mongoose;
 const TshirtSchema = Schema({
   name: { type: String, required: true },
   color: { type: String, default: "#182970" },
+  tshirt_type: {
+    type: String,
+    enum: {
+      values: ["Half-Sleeve", "Long-Sleeve", "Hody"],
+      message: "{VALUE} is not supported",
+    },
+  },
   type: {
     type: String,
     enum: {
-      values: ["Printed", "NonPrinted"],
+      values: ["Printed", "Not-Printed"],
       message: "{VALUE} is not supported",
     },
   },
@@ -34,6 +41,8 @@ const TshirtSchema = Schema({
     min: [100, "Price must be greater than 100"],
   },
   img: { type: String, required: true },
+  stock: { type: Boolean, default: true },
+  description: { type: String, required: true },
 });
 
 const Tshirt = mongoose.model("T-Shirt", TshirtSchema);
