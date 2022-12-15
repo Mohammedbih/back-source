@@ -1,3 +1,4 @@
+const { Error } = require("mongoose");
 const Tshirt = require("../models/t_shirt.model");
 
 const tShirtController = {};
@@ -44,7 +45,7 @@ tShirtController.get_list = async (req, res, next) => {
     const tList = await getAllTshirts(limit);
     return res.status(200).send(tList);
   } catch (e) {
-     next(e);
+    next(e);
   }
 };
 const getAllTshirts = async (n) => {
@@ -163,6 +164,37 @@ tShirtController.post_update_by_id = async (req, res, next) => {
         error: error,
       });
     });
+};
+// Review
+tShirtController.post_review = async (req, res, next) => {
+  const tShirt = await Tshirt.findById(req.params.id);
+  const { rating, comment } = req.body;
+
+  if (tShirt) {
+    const alreadyReviewed = tShirt.reviews.find(
+      (r) => r.user.toString() === req.user._id.toString()
+    );
+    if (alreadyReviewed) {
+      res.status(400);
+      throw new Error("T-Shirt already Reviewed");
+    }
+    const review = {
+      name: req.user.name,
+      rating: Number(rating),
+      comment,
+      user: req.user._id,
+    };
+    tShirt.reviews.push(review);
+    tShirt.no_of_reviews = tShirt.reviews.length;
+    tShirt.rating =
+      tShirt.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      tShirt.reviews.length;
+    await tShirt.save();
+    res.status(201).json({ message: "Review Added" });
+  } else {
+    res.status(404);
+    throw new Error("T-Shirt Not Found");
+  }
 };
 
 module.exports = tShirtController;
