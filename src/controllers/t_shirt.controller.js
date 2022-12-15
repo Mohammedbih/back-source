@@ -51,6 +51,84 @@ const getAllTshirts = async (n) => {
   return await Tshirt.find().limit(n);
 };
 
+
+// Get sub list with hody
+tShirtController.get_hody_list = async (req, res, next) => {
+  const { limit = 10 } = req.query;
+  try {
+    const tList = await getHodyTshirts(limit);
+    return res.status(200).send(tList);
+  } catch (e) {
+     next(e);
+  }
+};
+const getHodyTshirts = async (n) => {
+  return await Tshirt.find().filter(t_shirt => t_shirt.tshirt_type === "Hody");
+};
+
+// Get sub list with Long Sleeve
+tShirtController.get_long_sleeve_list = async (req, res, next) => {
+  const { limit = 10 } = req.query;
+  try {
+    const tList = await getLongSleeveTshirts(limit);
+    return res.status(200).send(tList);
+  } catch (e) {
+     next(e);
+  }
+};
+const getLongSleeveTshirts = async (n) => {
+  return await Tshirt.find().filter(t_shirt => t_shirt.tshirt_type === "Long-Sleeve");
+};
+
+
+// Get sub list with half sleeve
+tShirtController.get_half_sleeve_list = async (req, res, next) => {
+  const { limit = 10 } = req.query;
+  try {
+    const tList = await getHalfSleeveTshirts(limit);
+    return res.status(200).send(tList);
+  } catch (e) {
+     next(e);
+  }
+};
+const getHalfSleeveTshirts = async (n) => {
+  return await Tshirt.find().filter(t_shirt => t_shirt.tshirt_type === "Half-Sleeve");
+};
+
+
+
+// Get printed list 
+tShirtController.get_printed_list = async (req, res, next) => {
+  const { limit = 10 } = req.query;
+  try {
+    const tList = await getPrintedTshirts(limit);
+    return res.status(200).send(tList);
+  } catch (e) {
+     next(e);
+  }
+};
+const getPrintedTshirts = async (n) => {
+  return await Tshirt.find().filter(t_shirt => t_shirt.type === "Printed");
+};
+
+
+
+// Get not printed list 
+tShirtController.get_not_printed_list = async (req, res, next) => {
+  const { limit = 10 } = req.query;
+  try {
+    const tList = await getNotPrintedTshirts(limit);
+    return res.status(200).send(tList);
+  } catch (e) {
+     next(e);
+  }
+};
+const getNotPrintedTshirts = async (n) => {
+  return await Tshirt.find().filter(t_shirt => t_shirt.type === "Not-Printed");
+};
+
+
+
 // Delete
 tShirtController.post_delete_by_id = (req, res, next) => {
   Tshirt.findByIdAndRemove(req.params.id, (err, doc) => {

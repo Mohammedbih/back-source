@@ -12,6 +12,12 @@ router.post("/login", userController.login);
 
 router.get("/t-shirts/get-all", tShirtController.get_list);
 router.get("/t-shirts/get-by-id/:id", tShirtController.get_tShirt_by_id);
+router.get("/t-shirts/get-hody", tShirtController.get_hody_list);
+router.get("/t-shirts/get-half-sleeve", tShirtController.get_half_sleeve_list);
+router.get("/t-shirts/get-not-printed", tShirtController.get_not_printed_list);
+router.get("/t-shirts/get-printed", tShirtController.get_printed_list);
+router.get("/t-shirts/get-long-sleeve", tShirtController.get_long_sleeve_list);
+
 
 //Customize And protect routs
 router.all("*", (req, res, next) => {
