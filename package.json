@@ -25,6 +25,7 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "jsonwebtoken": "^8.5.1",
+    "jwt-check-expiration": "^1.0.5",
     "mongoose": "^6.8.0",
     "mongose": "^0.0.2-security",
     "morgan": "^1.10.0",

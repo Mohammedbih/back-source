@@ -8,7 +8,9 @@ const UserSchema = Schema({
   age: { type: Number },
   mobile: { type: String },
   visa_number: { type: Number, uinque: true },
-  t_shirts: { type: [] },
+  t_shirts:[
+    { type: mongoose.Schema.Types.ObjectId, ref: "T-Shirt" },
+  ],
   adress: { type: String },
   email: {
     type: String,
@@ -17,8 +19,16 @@ const UserSchema = Schema({
     index: true,
   },
   password: { type: String, required: true },
-  type: { type: String }, // admin || user
+  type: {
+    type: String,
+    enum: {
+      values: ["User", "Admin"],
+      message: "{VALUE} is not supported",
+    },
+    default: "User"
+  },
   joined: { type: Date, default: new Date() },
+  token: String,
 });
 
 UserSchema.pre("save", async function (next) {
@@ -39,8 +49,14 @@ UserSchema.pre("save", async function (next) {
   }
 });
 
-UserSchema.methods.isPasswordMatch = function(password, hashed){
-  return bctypt.compareSync(password,hashed)
+UserSchema.methods.isPasswordMatch = function (password, hashed) {
+  return bctypt.compareSync(password, hashed);
+};
+
+UserSchema.methods.toJSON = function(){
+  const userObject = this.toObject()
+  delete userObject.password;
+  return userObject;
 }
 
 const User = mongoose.model("User", UserSchema);

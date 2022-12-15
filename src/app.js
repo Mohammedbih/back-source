@@ -20,7 +20,7 @@ async function main() {
 // ------------------- Middlewares ------------------- //
 app.use(logger("dev"));
 
-// app.use(cors());
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

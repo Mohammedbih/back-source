@@ -5,21 +5,31 @@ const User = require("../models/user.model");
 const userController = {};
 
 userController.register = async (req, res, next) => {
-  const newUser = new User(req.body);
-  console.log("newUser", newUser);
+  const user = await User.findOne({ email: req.body.email });
 
-  try {
-    const user = await newUser.save();
-    return res.send({ user });
-  } catch (e) {
-    console.log(e);
-    if (e.code === 11000 && e.name === "MongoError") {
-      const err = new Error(`Email adress ${req.body.email} is already taken`);
-      next(err);
-    } else {
-      next(e);
+  if (!user) {
+    try {
+      const newUser = new User(req.body);
+      console.log("newUser", newUser);
+
+      const secret = process.env.JWT_SECRET; //Secret
+      const expire = process.env.JWT_EXPIRATION; //Expiration
+
+      const token = jwt.sign({ _id: newUser._id }, secret, {
+        expiresIn: expire,
+      });
+      newUser.token = token;
+
+      const user = await newUser.save();
+
+      return res.send({ token: user.token });
+    } catch (e) {
+      console.log(e);
+      return next(e);
     }
   }
+  const err = new Error(`Email adress ${req.body.email} is already taken`);
+  return next(err);
 };
 
 userController.login = async (req, res, next) => {
@@ -39,12 +49,15 @@ userController.login = async (req, res, next) => {
       err.status = 401;
       return next(err);
     }
-    //if credi ok, then JWT and return
     const secret = process.env.JWT_SECRET; //Secret
     const expire = process.env.JWT_EXPIRATION; //Expiration
+    jwt.verify(user.token, secret, function (err, decoded) {
+      if (err) {
+        user.token = jwt.sign({ _id: user._id }, secret, { expiresIn: expire });
+      }
+    });
 
-    const token = jwt.sign({ _id: user._id }, secret, { expiresIn: expire });
-    return res.send({ token });
+    return res.send({ token: user.token });
   } catch (e) {
     return next(e);
   }
