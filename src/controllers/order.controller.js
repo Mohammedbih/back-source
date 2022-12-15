@@ -52,4 +52,29 @@ const getOrder = async (id) => {
   return order_exists;
 };
 
+// Paid
+orderController.put_is_paid = async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.is_paid = true;
+    order.paid_at = Date.now;
+    order.payment_result = {
+      id: req.body.id,
+      status: req.body.status,
+      email_address: req.body.email_address,
+      time: req.body.time,
+    };
+    const updated_order = await order.save();
+    res.json(updated_order);
+  } else {
+    res.status(400);
+    throw new Error(" Order Not Found");
+  }
+};
+// Get
+orderController.get_order_list = async (req, res, next) => {
+  const order = await Order.find({ user: req.user._id }).sort({ _id: -1 });
+  res.json(order);
+};
+
 module.exports = orderController;
