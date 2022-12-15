@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const ReviewSchema = Schema({
+  name:{type: String, require: true},
   rating: { type: Number, require: true },
   comment: {
     type: String,
