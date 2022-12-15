@@ -1,4 +1,4 @@
-const Visa = require("../models/t_shirt.model");
+const Visa = require("../models/visa.model");
 
 const visaController = {};
 
