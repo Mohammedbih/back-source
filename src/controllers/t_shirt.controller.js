@@ -52,15 +52,18 @@ const getAllTshirts = async (n) => {
 };
 
 // Delete
-tShirtController.post_delete_by_id = (req, res, next) => {
-  Tshirt.findByIdAndRemove(req.params.id, (err, doc) => {
-    if (!err) {
-      // redirct to list endpoint
-    } else {
-      console.log(err);
-      return res.status(401).send({ err });
-    }
-  });
+tShirtController.post_delete_by_id = async (req, res, next) => {
+  try {
+    const result = await Tshirt.findByIdAndRemove(req.params.id);
+    console.log(result);
+    if (result != null)
+      return res.status(200).send({
+        result,
+      });
+    throw new Error("Not Found");
+  } catch (e) {
+    next(e);
+  }
 };
 
 // Update
