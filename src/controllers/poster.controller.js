@@ -81,7 +81,7 @@ posterController.post_poster = async (req, res, next) => {
       price: req.body.price,
       img: req.body.img,
     });
-    Poster.findByIdAndUpdate(id, t_shirt)
+    Poster.findByIdAndUpdate(id, poster)
       .then(() => {
         res.status(201).json({
           message: "Poster updated successfully!",
