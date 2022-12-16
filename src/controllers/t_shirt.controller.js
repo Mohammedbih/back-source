@@ -2,12 +2,12 @@ const Tshirt = require("../models/t_shirt.model");
 
 const tShirtController = {};
 
-// Create
+// Create for admins
 tShirtController.post_tShirt = async (req, res, next) => {
-  const newTshirt = new Tshirt(req.body);
-  console.log("newTshirt", newTshirt);
-
   try {
+    if (req.user.type === "User") return next(new Error("Admin erea!"));
+    const newTshirt = new Tshirt(req.body);
+    console.log("newTshirt", newTshirt);
     const tShirt = await newTshirt.save();
     return res.send({ tShirt });
   } catch (e) {
@@ -51,9 +51,10 @@ const getAllTshirts = async (n) => {
   return await Tshirt.find().limit(n);
 };
 
-// Delete
+// Delete for admins
 tShirtController.post_delete_by_id = async (req, res, next) => {
   try {
+    if (req.user.type === "User") return next(new Error("Admin erea!"));
     const result = await Tshirt.findByIdAndRemove(req.params.id);
     console.log(result);
     if (result != null)
@@ -68,6 +69,7 @@ tShirtController.post_delete_by_id = async (req, res, next) => {
 
 // Update
 tShirtController.post_update_by_id = async (req, res, next) => {
+  if (req.user.type === "User") return next(new Error("Admin erea!"));
   const id = req.params.id;
   const _price = req.body.price;
   const t_shirt = new Tshirt({
