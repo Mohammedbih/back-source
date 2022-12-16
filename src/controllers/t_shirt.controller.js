@@ -44,7 +44,7 @@ tShirtController.get_list = async (req, res, next) => {
     const tList = await getAllTshirts(limit);
     return res.status(200).send(tList);
   } catch (e) {
-     next(e);
+    next(e);
   }
 };
 const getAllTshirts = async (n) => {
@@ -66,12 +66,13 @@ tShirtController.post_delete_by_id = (req, res, next) => {
 // Update
 tShirtController.post_update_by_id = async (req, res, next) => {
   const id = req.params.id;
+  const _price = req.body.price;
   const t_shirt = new Tshirt({
     _id: id,
     name: req.body.name,
     color: req.body.color,
     type: req.body.type,
-    price: req.body.price,
+    price: _price > 100 ? _price : undefined,
     img: req.body.img,
   });
   Tshirt.findByIdAndUpdate(id, t_shirt)
