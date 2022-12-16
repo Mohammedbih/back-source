@@ -16,7 +16,6 @@ protect,
     if (order_items && order_items.length === 0) {
       res.status(400);
       throw new Error("No Order items");
-      return;
     } else {
       const order = new Order({
         order_items,
