@@ -23,7 +23,7 @@ const PosterSchema = Schema({
   description: { type: String, require: true },
   rating: { type: Number, require: true, default: 0 },
   no_of_reviews: { type: Number, require: true, default: 0 },
-  reviews: [Review]
+  reviews: {type:[Review.Schema]}
 
 });
 

@@ -54,7 +54,10 @@ router.get("/test", (req, res, next) => {
 router.post("/t-shirt/add", tShirtController.post_tShirt);
 router.post("/t-shirt/delete-by-id/:id", tShirtController.post_delete_by_id);
 router.post("/t-shirt/update-by-id/:id", tShirtController.post_update_by_id);
-router.post("/t-shirt/add-review-by-id/:id", tShirtController.post_review_by_id);
+router.post(
+  "/t-shirt/add-review-by-id/:id",
+  tShirtController.post_review_by_id
+);
 
 router.get("/visa/get-by-id/:id", visaController.get_visa_by_id);
 router.get("/visa/get-all", visaController.get_list);

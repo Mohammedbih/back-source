@@ -127,7 +127,7 @@ posterController.post_review_by_id = async (req, res, next) => {
 };
 
 // Review get by id
-tShirtController.get_poster_review_by_id = async (req, res, next) => {
+posterController.get_poster_review_by_id = async (req, res, next) => {
   const tShirt = await Poster.findById(req.params.id);
 
   if (!tShirt) {
