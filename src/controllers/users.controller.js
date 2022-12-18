@@ -28,7 +28,7 @@ userController.register = async (req, res, next) => {
       return next(e);
     }
   }
-  const err = new Error(`Email adress ${req.body.email} is already taken`);
+  const err = new Error(`Email address ${req.body.email} is already taken`);
   return next(err);
 };
 
