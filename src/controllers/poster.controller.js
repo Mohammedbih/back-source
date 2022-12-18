@@ -1,5 +1,6 @@
 const { Error } = require("mongoose");
 const Poster = require("../models/poster.model");
+const Review = require("../models/review.model")
 
 const posterController = {};
 
@@ -94,7 +95,7 @@ posterController.post_poster = async (req, res, next) => {
       });
   };
 
-  // Review
+  // Review by id
   posterController.post_review = async (req, res, next) => {
     const poster = await Poster.findById(req.params.id);
     const { rating, comment } = req.body;
@@ -124,6 +125,19 @@ posterController.post_poster = async (req, res, next) => {
       res.status(404);
       throw new Error("Poster Not Found");
     }
-  };
+  }; 
+
+// Review get by id
+tShirtController.get_poster_review_by_id = async (req, res, next) => {
+  const tShirt = await Poster.findById(req.params.id);
+
+  if(!tShirt){
+    return next(new Error("Not Found"));
+  }
+  return res.status(200).send({
+    reviews: tShirt.reviews
+  });
+
+};
 
   module.exports = posterController;

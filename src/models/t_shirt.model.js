@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Review = require("./review.model");
 
 const { Schema } = mongoose;
 
@@ -45,7 +46,7 @@ const TshirtSchema = Schema({
   description: { type: String, require: true },
   rating: { type: Number, require: true, default: 0 },
   no_of_reviews: { type: Number, require: true, default: 0 },
-  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
+  reviews: [Review],
 });
 
 const Tshirt = mongoose.model("T-Shirt", TshirtSchema);

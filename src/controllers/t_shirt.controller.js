@@ -165,7 +165,7 @@ tShirtController.post_update_by_id = async (req, res, next) => {
       });
     });
 };
-// Review
+// Review Post
 tShirtController.post_review = async (req, res, next) => {
   const tShirt = await Tshirt.findById(req.params.id);
   const { rating, comment } = req.body;
@@ -197,4 +197,16 @@ tShirtController.post_review = async (req, res, next) => {
   }
 };
 
+// Review get by id
+tShirtController.get_tshirt_review_by_id = async (req, res, next) => {
+  const tShirt = await Tshirt.findById(req.params.id);
+
+  if(!tShirt){
+    return next(new Error("Not Found"));
+  }
+  return res.status(200).send({
+    reviews: tShirt.reviews
+  });
+
+};
 module.exports = tShirtController;
