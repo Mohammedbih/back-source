@@ -3,32 +3,32 @@ const Order = require("../models/order.model");
 const orderController = {};
 
 // Create
-protect,
-  (orderController.post_create_order = async (req, res, next) => {
-    const {
+
+orderController.post_create_order = async (req, res, next) => {
+  const {
+    order_items,
+    shipping_address,
+    payment_method,
+    tax,
+    shipping_price,
+    total_price,
+  } = req.body;
+  if (order_items && order_items.length === 0) {
+    res.status(400);
+    throw new Error("No Order items");
+  } else {
+    const order = new Order({
       order_items,
       shipping_address,
       payment_method,
       tax,
       shipping_price,
       total_price,
-    } = req.body;
-    if (order_items && order_items.length === 0) {
-      res.status(400);
-      throw new Error("No Order items");
-    } else {
-      const order = new Order({
-        order_items,
-        shipping_address,
-        payment_method,
-        tax,
-        shipping_price,
-        total_price,
-      });
-      const create_order = await order.save();
-      res.status(201).json(create_order);
-    }
-  });
+    });
+    const create_order = await order.save();
+    res.status(201).json(create_order);
+  }
+};
 
 // Get
 orderController.get_order_by_id = async (req, res, next) => {

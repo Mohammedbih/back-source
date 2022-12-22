@@ -3,12 +3,12 @@ const Tshirt = require("../models/t_shirt.model");
 
 const tShirtController = {};
 
-// Create
+// Create for admins
 tShirtController.post_tShirt = async (req, res, next) => {
-  const newTshirt = new Tshirt(req.body);
-  console.log("newTshirt", newTshirt);
-
   try {
+    if (req.user.type === "User") return next(new Error("Admin area!"));
+    const newTshirt = new Tshirt(req.body);
+    console.log("newTshirt", newTshirt);
     const tShirt = await newTshirt.save();
     return res.send({ tShirt });
   } catch (e) {
@@ -130,27 +130,33 @@ const getNotPrintedTshirts = async (n) => {
   );
 };
 
-// Delete
-tShirtController.post_delete_by_id = (req, res, next) => {
-  Tshirt.findByIdAndRemove(req.params.id, (err, doc) => {
-    if (!err) {
-      // redirct to list endpoint
-    } else {
-      console.log(err);
-      return res.status(401).send({ err });
-    }
-  });
+// Delete for admins
+tShirtController.post_delete_by_id = async (req, res, next) => {
+  try {
+    if (req.user.type === "User") return next(new Error("Admin area!"));
+    const result = await Tshirt.findByIdAndRemove(req.params.id);
+    console.log(result);
+    if (result != null)
+      return res.status(200).send({
+        result,
+      });
+    throw new Error("Not Found");
+  } catch (e) {
+    next(e);
+  }
 };
 
 // Update
 tShirtController.post_update_by_id = async (req, res, next) => {
+  if (req.user.type === "User") return next(new Error("Admin area!"));
   const id = req.params.id;
+  const _price = req.body.price;
   const t_shirt = new Tshirt({
     _id: id,
     name: req.body.name,
     color: req.body.color,
     type: req.body.type,
-    price: req.body.price,
+    price: _price > 100 ? _price : undefined,
     img: req.body.img,
   });
   Tshirt.findByIdAndUpdate(id, t_shirt)
@@ -176,7 +182,7 @@ tShirtController.post_review_by_id = async (req, res, next) => {
     );
     if (alreadyReviewed) {
       res.status(400);
-      throw new Error("T-Shirt already Reviewed");
+      next(new Error(`T-Shirt already Reviewed from user ${req.user.name}`));
     }
     const review = {
       name: req.user.name,

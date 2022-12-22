@@ -10,12 +10,12 @@ const PosterSchema = Schema({
     enum: {
       values: ["Small", "Large"],
       message: "{VALUE} is not supported",
-    }
+    },
   },
   price: {
     type: Number,
     require: true,
-    min: [50, "Price must be greater than 50"]
+    min: [50, "Price must be greater than 50"],
   },
   date: { type: Date, default: new Date() },
   img: { type: String, require: true },
@@ -23,8 +23,8 @@ const PosterSchema = Schema({
   description: { type: String, require: true },
   rating: { type: Number, require: true, default: 0 },
   no_of_reviews: { type: Number, require: true, default: 0 },
-  reviews: [Review]
-
+  reviews: { type: [Review.Schema] },
+  quantity: { type: Number, default: 1 },
 });
 
 const Poster = mongoose.model("Poster", PosterSchema);

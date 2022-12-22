@@ -72,4 +72,9 @@ router.post("/poster/update-by-id/:id", posterController.post_update_by_id);
 router.post("/poster/add-review-by-id/:id", posterController.post_review_by_id);
 router.post("/poster/add", posterController.post_poster);
 
+// router.post("/user/add-cart", userController.post_add_cart);
+router.post("/user/delete-cart-by-id/:id", userController.post_delete_cart_by_id);
+// router.post("/user/update-cart-by-id/:id", userController.post_update_cart_by_id);
+// router.get("/user/get-carts", userController.get_carts);
+
 module.exports = router;

@@ -63,4 +63,34 @@ userController.login = async (req, res, next) => {
   }
 };
 
+
+// carts 
+
+// delete
+
+// router.post("/user/add-cart", userController.post_add_cart);
+// router.post("/user/delete-cart-by-id/:id", userController.post_delete_cart_by_id);
+// router.post("/user/update-cart-by-id/:id", userController.post_update_cart_by_id);
+// router.get("/user/get-carts", userController.get_carts);
+
+userController.post_delete_cart_by_id = async (req, res, next) => {
+  const id = req.params.id;
+
+  if (!id) return res.status(404).send({ err: "Missing Data Parameter" });
+
+  const user = req.user;
+  try {
+    const index = await user.carts.indexOf({_id: id})
+    const result = await user.carts.splice(index,1);
+    if(result){
+     return res.status(200).send({massage: `${result} deleted`})
+    }
+    return res.status(401).send({error: "error can not delete"})
+
+  } catch (error) {
+    next(error)
+  }
+
+}
+
 module.exports = userController;

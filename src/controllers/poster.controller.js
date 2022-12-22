@@ -127,14 +127,14 @@ posterController.post_review_by_id = async (req, res, next) => {
 };
 
 // Review get by id
-tShirtController.get_poster_review_by_id = async (req, res, next) => {
-  const tShirt = await Poster.findById(req.params.id);
+posterController.get_poster_review_by_id = async (req, res, next) => {
+  const poster = await Poster.findById(req.params.id);
 
-  if (!tShirt) {
+  if (!poster) {
     return next(new Error("Not Found"));
   }
   return res.status(200).send({
-    reviews: tShirt.reviews,
+    reviews: poster.reviews,
   });
 };
 
