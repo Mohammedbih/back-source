@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+const Poster = require("../models/poster.model");
+const Tshirt = require("../models/t_shirt.model");
 
 const User = require("../models/user.model");
 
@@ -63,8 +65,7 @@ userController.login = async (req, res, next) => {
   }
 };
 
-
-// carts 
+// carts
 
 // delete
 
@@ -73,24 +74,70 @@ userController.login = async (req, res, next) => {
 // router.post("/user/update-cart-by-id/:id", userController.post_update_cart_by_id);
 // router.get("/user/get-carts", userController.get_carts);
 
-userController.post_delete_cart_by_id = async (req, res, next) => {
+userController.post_delete_tshirt_cart_by_id = async (req, res, next) => {
   const id = req.params.id;
 
   if (!id) return res.status(404).send({ err: "Missing Data Parameter" });
 
   const user = req.user;
   try {
-    const index = await user.carts.indexOf({_id: id})
-    const result = await user.carts.splice(index,1);
-    if(result){
-     return res.status(200).send({massage: `${result} deleted`})
+    console.log(user.carts_tshirt.items);
+    const index = user.carts_tshirt.items.findIndex((p) => p.tshirtId == id);
+    console.log(index);
+    if (index == -1) {
+      return next(new Error("id is not correct"));
     }
-    return res.status(401).send({error: "error can not delete"})
-
+    const result = user.carts_tshirt.items.splice(index, 1);
+    if (result) {
+      return res.status(200).send({ result });
+    }
+    return res.status(401).send({ error: "error can not delete" });
   } catch (error) {
-    next(error)
+    next(error);
   }
+};
 
-}
+userController.post_delete_poster_cart_by_id = async (req, res, next) => {
+  const id = req.params.id;
 
-module.exports = userController;
+  if (!id) return res.status(404).send({ err: "Missing Data Parameter" });
+
+  const user = req.user;
+  try {
+    const index = await user.carts_poster.indexOf({ _id: id });
+    if (index == -1) {
+      return next(new Error("id is not correct"));
+    }
+    const result = await user.carts_poster.splice(index, 1);
+    if (result) {
+      return res.status(200).send({ massage: `${result} deleted` });
+    }
+    return res.status(401).send({ error: "error can not delete" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// add to tshirt cart
+userController.post_add_tshirt_to_cart = async (req, res, next) => {
+  Tshirt.findById(req.params.id)
+    .then((tshirt) => {
+      req.user.addTshirtToCart(tshirt).then((result) => {
+        return res.status(200).send({ result });
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+// add to poster cart
+userController.post_add_poster_to_cart = async (req, res, next) => {
+  Poster.findById(req.params.id)
+    .then((poster) => {
+      req.user.addPosterToCart(poster).then((result) => {
+        return res.status(200).send({ result });
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+userController.post_add_cart = module.exports = userController;
