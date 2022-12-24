@@ -4,8 +4,9 @@ const Review = require("../models/review.model");
 
 const posterController = {};
 
-// Create
+// Create for admin
 posterController.post_poster = async (req, res, next) => {
+  if (!req.user.isAdmin) return next(new Error("Admin area!"));
   const newPoster = new Poster(req.body);
   console.log("newPoster", newPoster);
 
@@ -57,6 +58,7 @@ const getAllPoster = async (n) => {
 
 // Delete
 posterController.post_delete_by_id = (req, res, next) => {
+  if (!req.user.isAdmin) return next(new Error("Admin area!"));
   Poster.findByIdAndRemove(req.params.id, (err, doc) => {
     if (!err) {
       // redirct to list endpoint
@@ -68,7 +70,8 @@ posterController.post_delete_by_id = (req, res, next) => {
 };
 
 // Update
-posterController.post_update_by_id = async (req, res, next) => {
+posterController.put_update_by_id = async (req, res, next) => {
+  if (!req.user.isAdmin) return next(new Error("Admin area!"));
   const id = req.params.id;
   const poster = new Poster({
     _id: id,
