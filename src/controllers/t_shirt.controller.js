@@ -6,7 +6,7 @@ const tShirtController = {};
 // Create for admins
 tShirtController.post_tShirt = async (req, res, next) => {
   try {
-    if (req.user.type === "User") return next(new Error("Admin area!"));
+    if (!req.user.isAdmin) return next(new Error("Admin area!"));
     const newTshirt = new Tshirt(req.body);
     console.log("newTshirt", newTshirt);
     const tShirt = await newTshirt.save();
@@ -63,9 +63,8 @@ tShirtController.get_hody_list = async (req, res, next) => {
   }
 };
 const getHodyTshirts = async (n) => {
-  return await Tshirt.find().filter(
-    (t_shirt) => t_shirt.tshirt_type === "Hody"
-  );
+  const list = await Tshirt.find().limit(n);
+  return list.filter((t_shirt) => t_shirt.tshirt_type === "Hody");
 };
 
 // Get sub list with Long Sleeve
@@ -79,9 +78,8 @@ tShirtController.get_long_sleeve_list = async (req, res, next) => {
   }
 };
 const getLongSleeveTshirts = async (n) => {
-  return await Tshirt.find().filter(
-    (t_shirt) => t_shirt.tshirt_type === "Long-Sleeve"
-  );
+  const list = await Tshirt.find().limit(n);
+  return list.filter((t_shirt) => t_shirt.tshirt_type === "Long-Sleeve");
 };
 
 // Get sub list with half sleeve
@@ -95,9 +93,8 @@ tShirtController.get_half_sleeve_list = async (req, res, next) => {
   }
 };
 const getHalfSleeveTshirts = async (n) => {
-  return await Tshirt.find().filter(
-    (t_shirt) => t_shirt.tshirt_type === "Half-Sleeve"
-  );
+  const list = await Tshirt.find().limit(n);
+  return list.filter((t_shirt) => t_shirt.tshirt_type === "Half-Sleeve");
 };
 
 // Get printed list
@@ -111,7 +108,8 @@ tShirtController.get_printed_list = async (req, res, next) => {
   }
 };
 const getPrintedTshirts = async (n) => {
-  return await Tshirt.find().filter((t_shirt) => t_shirt.type === "Printed");
+  const list = await Tshirt.find().limit(n);
+  return list.filter((t_shirt) => t_shirt.type === "Printed");
 };
 
 // Get not printed list
@@ -125,15 +123,14 @@ tShirtController.get_not_printed_list = async (req, res, next) => {
   }
 };
 const getNotPrintedTshirts = async (n) => {
-  return await Tshirt.find().filter(
-    (t_shirt) => t_shirt.type === "Not-Printed"
-  );
+  const list = await Tshirt.find().limit(n);
+  return list.filter((t_shirt) => t_shirt.type === "Not-Printed");
 };
 
 // Delete for admins
 tShirtController.post_delete_by_id = async (req, res, next) => {
   try {
-    if (req.user.type === "User") return next(new Error("Admin area!"));
+    if (!req.user.isAdmin) return next(new Error("Admin area!"));
     const result = await Tshirt.findByIdAndRemove(req.params.id);
     console.log(result);
     if (result != null)
@@ -147,8 +144,8 @@ tShirtController.post_delete_by_id = async (req, res, next) => {
 };
 
 // Update
-tShirtController.post_update_by_id = async (req, res, next) => {
-  if (req.user.type === "User") return next(new Error("Admin area!"));
+tShirtController.put_update_by_id = async (req, res, next) => {
+  if (!req.user.isAdmin) return next(new Error("Admin area!"));
   const id = req.params.id;
   const _price = req.body.price;
   const t_shirt = new Tshirt({

@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+const Poster = require("../models/poster.model");
+const Tshirt = require("../models/t_shirt.model");
 
 const User = require("../models/user.model");
 
@@ -63,4 +65,55 @@ userController.login = async (req, res, next) => {
   }
 };
 
-module.exports = userController;
+// carts
+
+// delete
+
+// router.post("/user/add-cart", userController.post_add_cart);
+// router.post("/user/delete-cart-by-id/:id", userController.post_delete_cart_by_id);
+// router.post("/user/update-cart-by-id/:id", userController.post_update_cart_by_id);
+// router.get("/user/get-carts", userController.get_carts);
+
+userController.post_delete_tshirt_cart_by_id = async (req, res, next) => {
+  Tshirt.findById(req.params.id)
+    .then((tshirt) => {
+      req.user.deleteTshirtFromCart(tshirt).then((result) => {
+        return res.status(200).send({ result });
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+userController.post_delete_poster_cart_by_id = async (req, res, next) => {
+  Poster.findById(req.params.id)
+  .then((poster) => {
+    req.user.deletePosterFromCart(poster).then((result) => {
+      return res.status(200).send({ result });
+    });
+  })
+  .catch((err) => console.log(err));
+};
+
+// add to tshirt cart
+userController.post_add_tshirt_to_cart = async (req, res, next) => {
+  Tshirt.findById(req.params.id)
+    .then((tshirt) => {
+      req.user.addTshirtToCart(tshirt).then((result) => {
+        return res.status(200).send({ result });
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+// add to poster cart
+userController.post_add_poster_to_cart = async (req, res, next) => {
+  Poster.findById(req.params.id)
+    .then((poster) => {
+      req.user.addPosterToCart(poster).then((result) => {
+        return res.status(200).send({ result });
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+userController.post_add_cart = module.exports = userController;

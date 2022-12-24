@@ -4,7 +4,7 @@ const Review = require("./review.model");
 const { Schema } = mongoose;
 
 const TshirtSchema = Schema({
-  name: { type: String, require: true },
+  name: { type: String, required: true },
   color: { type: String, default: "#182970" },
   tshirt_type: {
     type: String,
@@ -38,15 +38,16 @@ const TshirtSchema = Schema({
   added: { type: Date, default: new Date() },
   price: {
     type: Number,
-    require: true,
+    requiredd: true,
     min: [100, "Price must be greater than 100"],
   },
-  img: { type: String, require: true },
+  img: { type: String, required: true },
   stock: { type: Boolean, default: true },
-  description: { type: String, require: true },
-  rating: { type: Number, require: true, default: 0 },
-  no_of_reviews: { type: Number, require: true, default: 0 },
-  reviews: {type:[Review.Schema]},
+  description: { type: String, required: true },
+  rating: { type: Number, required: true, default: 0 },
+  no_of_reviews: { type: Number, required: true, default: 0 },
+  reviews: { type: [Review.Schema] },
+  quantity: { type: Number, default: 1 },
 });
 
 const Tshirt = mongoose.model("T-Shirt", TshirtSchema);

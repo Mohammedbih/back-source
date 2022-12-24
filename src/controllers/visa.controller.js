@@ -20,7 +20,6 @@ visaController.post_create_visa = async (req, res, next) => {
 };
 
 // Get
-
 visaController.get_visa_by_id = async (req, res, next) => {
   const id = req.params.id;
   if (!id) return res.status(404).send({ err: "Missing Data Parameter" });
@@ -40,9 +39,9 @@ const getVisa = async (id) => {
   return visa_exists;
 };
 
-// Get List
-
+// Get List for users
 visaController.get_list = async (req, res, next) => {
+  if (!req.user.isAdmin) return next(new Error("Admin area!"));
   const { limit = 10 } = req.query;
   try {
     const vList = await getAllVisa(limit);
@@ -67,7 +66,7 @@ visaController.post_delete_by_id = (req, res, next) => {
 };
 
 // Update
-visaController.post_update_by_id = async (req, res, next) => {
+visaController.put_update_by_id = async (req, res, next) => {
   const id = req.params.id;
   const visa = new Visa({
     _id: id,

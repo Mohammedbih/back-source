@@ -45,7 +45,7 @@ orderController.get_order_by_id = async (req, res, next) => {
 const getOrder = async (id) => {
   const order_exists = await Order.find({ _id: id });
 
-  if (!order_exists) throw new Error("Order Not Found");
+  if (!order_exists) return next(new Error("Order Not Found"));
 
   return order_exists;
 };
