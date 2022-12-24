@@ -11,6 +11,8 @@ posterController.post_poster = async (req, res, next) => {
   console.log("newPoster", newPoster);
 
   try {
+    const newPoster = new Poster(req.body);
+    console.log("newPoster", newPoster);
     const Poster = await newPoster.save();
     return res.send({ Poster });
   } catch (e) {
@@ -116,16 +118,17 @@ posterController.post_review_by_id = async (req, res, next) => {
       comment,
       user: req.user._id,
     };
-    poster.reviews.push(review);
-    poster.no_of_reviews = poster.reviews.length;
-    poster.rating =
-      poster.reviews.reduce((acc, item) => item.rating + acc, 0) /
-      poster.reviews.length;
-    await poster.save();
-    res.status(201).json({ message: "Review Added" });
-  } else {
-    res.status(404);
-    throw new Error("Poster Not Found");
+    try {
+      poster.reviews.push(review);
+      poster.no_of_reviews = poster.reviews.length;
+      poster.rating =
+        poster.reviews.reduce((acc, item) => item.rating + acc, 0) /
+        poster.reviews.length;
+      await poster.save();
+      res.status(201).json({ message: "Review Added" });
+    } catch (err) {
+      next(err);
+    }
   }
 };
 

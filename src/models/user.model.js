@@ -57,9 +57,9 @@ const UserSchema = Schema({
 
 UserSchema.pre("save", async function (next) {
   //Check new account, or modified
-  if (!this.isModified("password")) {
-    return next();
-  }
+  // if (!this.isModified("password")) {
+  //   return next();
+  // }
 
   //Encrypt pass
   try {

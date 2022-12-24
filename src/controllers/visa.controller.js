@@ -8,9 +8,9 @@ visaController.post_create_visa = async (req, res, next) => {
   const exist = await Visa.findOne({ number });
   try {
     if (!exist) {
-      const newVisa = new Visa(req.body);
+      const newVisa = new Visa({...req.body, owner: req.user._id});
       await newVisa.save();
-      return res.send({ status: "Successed" });
+      return res.status(200).send(newVisa);
     }
   } catch (err) {
     next(err);
@@ -58,9 +58,9 @@ visaController.post_delete_by_id = (req, res, next) => {
   Visa.findByIdAndRemove(req.params.id, (err, doc) => {
     if (!err) {
       // redirct to list endpoint
+      return res.status(200).send({message: "Deleted"})
     } else {
-      console.log(err);
-      return res.status(401).send({ err });
+      next(err)
     }
   });
 };

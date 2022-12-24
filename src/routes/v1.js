@@ -8,14 +8,11 @@ const visaController = require("../controllers/visa.controller");
 const orderController = require("../controllers/order.controller");
 const posterController = require("../controllers/poster.controller");
 
-
-
 // ------------------ Public ------------------//
 
 ////////////// User ////////////////////
 router.post("/register", userController.register);
 router.post("/login", userController.login);
-
 
 ////////////// T-Shirt ////////////////////
 router.get("/t-shirt/get-all", tShirtController.get_list);
@@ -52,8 +49,6 @@ router.all("*", (req, res, next) => {
   })(req, res, next);
 });
 
-
-
 // ------------------ Protected ------------------//
 
 ////////////// visa ////////////////////
@@ -74,10 +69,7 @@ router.post("/poster/delete-by-id/:id", posterController.post_delete_by_id);
 router.put("/poster/update-by-id/:id", posterController.put_update_by_id);
 router.post("/poster/add-review-by-id/:id", posterController.post_review_by_id);
 router.post("/poster/add", posterController.post_poster);
-router.post(
-  "/poster/add-cart/:id",
-  userController.post_add_poster_to_cart
-);
+router.post("/poster/add-cart/:id", userController.post_add_poster_to_cart);
 router.post(
   "/poster/delete-cart-by-id/:id",
   userController.post_delete_poster_cart_by_id
@@ -91,14 +83,13 @@ router.post(
   "/t-shirt/add-review-by-id/:id",
   tShirtController.post_review_by_id
 );
-router.post(
-  "/tshirt/add-cart/:id",
-  userController.post_add_tshirt_to_cart
-);
+router.post("/tshirt/add-cart/:id", userController.post_add_tshirt_to_cart);
 router.post(
   "/tshirt/delete-cart-by-id/:id",
   userController.post_delete_tshirt_cart_by_id
 );
 
+////////////// User ////////////////////
+router.put("/user/update", userController.put_update);
 
 module.exports = router;

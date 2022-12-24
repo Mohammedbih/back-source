@@ -1,3 +1,4 @@
+const { json } = require("body-parser");
 const jwt = require("jsonwebtoken");
 const Poster = require("../models/poster.model");
 const Tshirt = require("../models/t_shirt.model");
@@ -65,15 +66,19 @@ userController.login = async (req, res, next) => {
   }
 };
 
-// carts
+userController.put_update = async (req, res, next) => {
+  const user = req.user;
+  try {
+    const updatedUser = await User.findByIdAndUpdate(user._id, { ...req.body });
+    
+    await updatedUser.save()
+    return res.send(updatedUser)
+  } catch (e) {
+    next(e);
+  }
+};
 
-// delete
-
-// router.post("/user/add-cart", userController.post_add_cart);
-// router.post("/user/delete-cart-by-id/:id", userController.post_delete_cart_by_id);
-// router.post("/user/update-cart-by-id/:id", userController.post_update_cart_by_id);
-// router.get("/user/get-carts", userController.get_carts);
-
+//////////// Carts //////////////////
 userController.post_delete_tshirt_cart_by_id = async (req, res, next) => {
   Tshirt.findById(req.params.id)
     .then((tshirt) => {
@@ -86,12 +91,12 @@ userController.post_delete_tshirt_cart_by_id = async (req, res, next) => {
 
 userController.post_delete_poster_cart_by_id = async (req, res, next) => {
   Poster.findById(req.params.id)
-  .then((poster) => {
-    req.user.deletePosterFromCart(poster).then((result) => {
-      return res.status(200).send({ result });
-    });
-  })
-  .catch((err) => console.log(err));
+    .then((poster) => {
+      req.user.deletePosterFromCart(poster).then((result) => {
+        return res.status(200).send({ result });
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 // add to tshirt cart

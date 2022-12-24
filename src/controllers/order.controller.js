@@ -14,9 +14,10 @@ orderController.post_create_order = async (req, res, next) => {
   } = req.body;
   if (order_items && order_items.length === 0) {
     res.status(400);
-    throw new Error("No Order items");
+    next(new Error("No Order items"));
   } else {
     const order = new Order({
+      user: req.user._id,
       order_items,
       shipping_address,
       payment_method,
@@ -55,7 +56,7 @@ orderController.put_is_paid = async (req, res, next) => {
   const order = await Order.findById(req.params.id);
   if (order) {
     order.is_paid = true;
-    order.paid_at = Date.now;
+    order.paid_at = new Date();
     order.payment_result = {
       id: req.body.id,
       status: req.body.status,
@@ -66,7 +67,7 @@ orderController.put_is_paid = async (req, res, next) => {
     res.json(updated_order);
   } else {
     res.status(400);
-    throw new Error(" Order Not Found");
+    next(new Error(" Order Not Found"));
   }
 };
 // Get
