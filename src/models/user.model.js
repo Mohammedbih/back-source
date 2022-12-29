@@ -161,7 +161,9 @@ UserSchema.methods.deletePosterFromCart = function (poster) {
   if (cart.items.length == 0) cart.totalPrice = 0;
   else {
     const isExisting = cart.items.findIndex((objInItems) => {
-      return objInItems.posterId.toString().trim() === poster._id.toString().trim();
+      return (
+        objInItems.posterId.toString().trim() === poster._id.toString().trim()
+      );
     });
     console.log("isExistiong: ", isExisting);
     if (isExisting != -1) {
