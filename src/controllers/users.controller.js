@@ -28,7 +28,7 @@ userController.register = async (req, res, next) => {
       return res.send({ token: user.token });
     } catch (e) {
       console.log(e);
-      return next(e);
+      return res.send({ e });
     }
   }
   const err = new Error(`Email address ${req.body.email} is already taken`);
@@ -70,9 +70,9 @@ userController.put_update = async (req, res, next) => {
   const user = req.user;
   try {
     const updatedUser = await User.findByIdAndUpdate(user._id, { ...req.body });
-    
-    await updatedUser.save()
-    return res.send(updatedUser)
+
+    await updatedUser.save();
+    return res.send(updatedUser);
   } catch (e) {
     next(e);
   }
