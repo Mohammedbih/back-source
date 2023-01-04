@@ -48,7 +48,7 @@ router.all("*", (req, res, next) => {
 ////////////// visa ////////////////////
 router.get("/visa/:id", visaController.get_visa_by_id);
 router.get("/visa/all", visaController.get_list);
-router.post("/visa/add", visaController.post_create_visa);
+router.post("/visa", visaController.post_create_visa);
 router.delete("/visa/:id", visaController.post_delete_by_id);
 router.put("/visa/:id", visaController.put_update_by_id);
 
@@ -62,7 +62,7 @@ router.get("/order/all", orderController.get_order_list);
 router.delete("/poster/:id", posterController.post_delete_by_id);
 router.put("/poster/:id", posterController.put_update_by_id);
 router.post("/poster/review/:id", posterController.post_review_by_id);
-router.post("/poster/add", posterController.post_poster);
+router.post("/poster", posterController.post_poster);
 router.post("/poster/cart/:id", userController.post_add_poster_to_cart);
 router.delete("/poster/cart/:id", userController.post_delete_poster_cart_by_id);
 
@@ -71,7 +71,7 @@ router.post("/t-shirt", tShirtController.post_tShirt);
 router.delete("/t-shirt/:id", tShirtController.post_delete_by_id);
 router.put("/t-shirt/:id", tShirtController.put_update_by_id);
 router.post("/t-shirt/review/:id", tShirtController.post_review_by_id);
-router.post("/t-shirt/add-cart/:id", userController.post_add_tshirt_to_cart);
+router.post("/t-shirt/cart/:id", userController.post_add_tshirt_to_cart);
 router.delete(
   "/t-shirt/cart/:id",
   userController.post_delete_tshirt_cart_by_id
